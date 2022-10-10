@@ -97,12 +97,11 @@ namespace WinFormHW5
            sb.Append($"You receive: {lbl_residue.Text} back");
            Cheque ch = new Cheque(Guid.NewGuid(), sb.ToString(), DateTime.Now, "Ashley M. McGeehan");
 
-            DialogResult result = MessageBox.Show(sb.ToString(), "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Cancel)
-                return;
-
             File.WriteAllText($@"{directoryInfo.FullName}\Cheque.json", System.Text.Json.JsonSerializer.Serialize(ch));
+
+            var stringData = File.ReadAllText($@"{directoryInfo.FullName}\Cheque.json");
+            ch = JsonConvert.DeserializeObject<Cheque>(stringData);
+            MessageBox.Show(ch?.ToString());
 
         }
     }
